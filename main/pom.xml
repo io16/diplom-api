@@ -30,7 +30,7 @@
                 <transformer
                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <Main-Class>com.queue.auth.main.Main</Main-Class>
+                    <Main-Class>com.queue.main.Main</Main-Class>
                   </manifestEntries>
                 </transformer>
               </transformers>
