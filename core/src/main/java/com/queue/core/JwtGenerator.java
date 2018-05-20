@@ -7,6 +7,7 @@ import io.reactivex.Single;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+@Deprecated
 @Singleton
 public class JwtGenerator  {
 

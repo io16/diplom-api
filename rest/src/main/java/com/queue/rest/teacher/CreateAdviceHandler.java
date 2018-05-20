@@ -21,13 +21,6 @@ public class CreateAdviceHandler extends HttpRequestHandler {
   private final Logger log = LoggerFactory.getLogger(CreateAdviceHandler.class);
   @Inject JwtGenerator generator;
 
-//  @Override
-//  public void configure(Router router) {
-//    router.route(POST, "/auth2")
-//        .handler(BodyHandler.create())
-//        .handler(this);
-//  }
-
   @Override
   public  void handle(RoutingContext request) {
     Flowable
