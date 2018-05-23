@@ -5,7 +5,7 @@ import com.queue.core.student.request.StudentAdviceRequest;
 public class ReserveAdviceRequest implements StudentAdviceRequest {
 
   @Override
-  public Integer getTeacherId() {
+  public Integer getStudentId() {
     return null;
   }
 
