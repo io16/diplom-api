@@ -1,13 +1,56 @@
 package com.queue.rest.teacher.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.queue.core.teacher.TeacherService;
+import com.queue.rest.auth.HttpRequestHandler;
+import com.queue.rest.teacher.request.CreateAdviceRequest;
+import io.reactivex.Flowable;
 import io.vertx.core.Handler;
 import io.vertx.reactivex.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 public class CreateAdviceHandler implements Handler<RoutingContext> {
+  private final Logger log = LoggerFactory.getLogger(HttpRequestHandler.class);
+
+  @Inject TeacherService service;
 
   @Override
   public void handle(RoutingContext request) {
-
+    Flowable
+        .just(request)
+        .map(RoutingContext::getBodyAsString)
+        .map(this::parseRequest)
+        .flatMapSingle(service::createAdvice)
+        .subscribe(
+            jwt -> {
+              var json = JSON.toJSON(jwt).toString();
+              request.response().setStatusCode(OK.code()).end(json);
+            },
+            error -> {
+              log.error("Could not handle request.", error);
+//              if (error instanceof HttpRequestHandler.BadRequest) {
+//                request.response().setStatusCode(BAD_REQUEST.code()).end();
+//              } else {
+//                request.response().setStatusCode(UNAUTHORIZED.code()).end();
+//              }
+            }
+        );
   }
-}
 
+  private CreateAdviceRequest parseRequest(String request) {
+    var adviceRequest = JSON.parseObject(request, CreateAdviceRequest.class);
+
+//    if (adviceRequest == null ||
+//        adviceRequest.getEmail() == null ||
+//        adviceRequest.getPassword() == null) throw new BadRequest();
+
+    return adviceRequest;
+  }
+
+  private class BadRequest extends RuntimeException {}
+}

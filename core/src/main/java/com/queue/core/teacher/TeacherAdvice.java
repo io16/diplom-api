@@ -14,5 +14,5 @@ public interface TeacherAdvice {
 
   Single<Advice> startStudentAdvice(Advice advice, Teacher teacher, Student student);
 
-  Single<Advice> endStudentAdvice(Advice advice, Teacher teacher, Student student);
+  Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student);
 }

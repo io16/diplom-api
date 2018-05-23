@@ -42,8 +42,8 @@ public class TeacherService implements TeacherAdvice {
   }
 
   @Override
-  public Single<Advice> endStudentAdvice(Advice advice, Teacher teacher, Student student) {
-    storage.endStudentAdvice(advice, teacher, student);
+  public Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student) {
+    storage.stopStudentAdvice(advice, teacher, student);
 
     return null;
   }
