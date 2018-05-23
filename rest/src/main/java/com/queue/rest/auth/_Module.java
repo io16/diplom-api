@@ -1,6 +1,7 @@
 package com.queue.rest.auth;
 
 import com.google.inject.AbstractModule;
+import com.queue.rest.HttpRequestHandler;
 import com.queue.rest.Route;
 
 public class _Module extends AbstractModule {
