@@ -2,7 +2,8 @@ package com.queue.core.student;
 
 import com.google.inject.Inject;
 import com.queue.core.Advice;
-import com.queue.core.StudentStorage;
+import com.queue.core.AdviceStorage;
+import com.queue.core.Student;
 import com.queue.core.student.request.StudentAdviceRequest;
 import io.reactivex.Single;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Singleton
 public class StudentService implements StudentAdvice {
   @Inject StudentStorage studentStorage;
+  @Inject AdviceStorage adviceStorage;
 
   @Override
   public Single<List<Advice>> getAdvices(StudentAdviceRequest request) {
@@ -22,9 +24,10 @@ public class StudentService implements StudentAdvice {
 
   @Override
   public Single<Advice> reserveAdvice(StudentAdviceRequest request) {
-//    studentStorage.reserveAdvice(advice, student);
-
-    return null;
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(studentStorage.getStudent(request.getStudentId()), this::zipAdviceAndStudent)
+        .flatMap(obj -> studentStorage.reserveAdvice(obj.advice, obj.student));
   }
 
   @Override
@@ -32,5 +35,19 @@ public class StudentService implements StudentAdvice {
 //    studentStorage.cancelAdviceReservation(advice, student);
 
     return null;
+
+  }
+
+  AdviceWithStudent zipAdviceAndStudent(Advice advice, Student student) {
+    var obj= new AdviceWithStudent();
+    obj.advice =advice;
+    obj.student =student;
+    return obj;
+
+  }
+
+  private class AdviceWithStudent {
+    Student student;
+    Advice advice;
   }
 }

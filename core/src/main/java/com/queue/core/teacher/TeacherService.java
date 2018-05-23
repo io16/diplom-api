@@ -2,7 +2,6 @@ package com.queue.core.teacher;
 
 import com.google.inject.Inject;
 import com.queue.core.Advice;
-import com.queue.core.TeacherStorage;
 import com.queue.core.teacher.request.TeacherAdviceRequest;
 import io.reactivex.Single;
 
