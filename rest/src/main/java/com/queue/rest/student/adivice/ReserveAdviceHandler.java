@@ -42,8 +42,8 @@ public class ReserveAdviceHandler implements Handler<RoutingContext> {
         );
   }
 
-  private CancelAdviceRequest parseRequest(String request) {
-    return JSON.parseObject(request, CancelAdviceRequest.class);
+  private ReserveAdviceRequest parseRequest(String request) {
+    return JSON.parseObject(request, ReserveAdviceRequest.class);
 
 //    if (adviceRequest == null ||
 //        adviceRequest.getEmail() == null ||

@@ -1,6 +1,6 @@
 package com.queue.rest.student.adivice;
 
-public class CancelAdive {
+public class CancelAdviceRequest {
 //  private String email;
 //  private String password;
 //

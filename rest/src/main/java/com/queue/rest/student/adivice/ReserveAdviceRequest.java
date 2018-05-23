@@ -1,6 +1,6 @@
 package com.queue.rest.student.adivice;
 
-public class ReserveAdvice {
+public class ReserveAdviceRequest {
   private String email;
   private String password;
 
