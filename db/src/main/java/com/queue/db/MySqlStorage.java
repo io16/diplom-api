@@ -13,18 +13,12 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MySqlStorage implements MetaDataStorage {
-  @Inject @Named("SqlClient") SQLClient sql;
+//  @Inject @Named("SqlClient") SQLClient sql;
 
   private static final String query = "SELECT id, email, password_salt, password_hash FROM users where email = ? ";
   @Override
   public Single<User> getUser(AuthRequest request) {
-    return sql
-        .rxQuerySingleWithParams(query, new JsonArray().add(request.getEmail()))
-        .map(rs -> {
-          if (rs == null) throw new UserNotFound();
-
-          return new UserImpl(rs.getInteger(0), rs.getString(1), rs.getString(2), rs.getString(3));
-        });
+    return null;
   }
 
   class UserImpl implements User {

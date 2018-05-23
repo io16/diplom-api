@@ -26,7 +26,7 @@ public class StudentService implements StudentAdvice {
   public Single<Advice> reserveAdvice(StudentAdviceRequest request) {
     return adviceStorage
         .getAdvice(request.getAdviceId())
-        .zipWith(studentStorage.getStudent(request.getStudentId()), this::zipAdviceAndStudent)
+        .zipWith(studentStorage.getStudent(request.getStudentId()), ZipAdviceWithStudent::new)
         .flatMap(obj -> studentStorage.reserveAdvice(obj.advice, obj.student));
   }
 
@@ -38,16 +38,14 @@ public class StudentService implements StudentAdvice {
 
   }
 
-  AdviceWithStudent zipAdviceAndStudent(Advice advice, Student student) {
-    var obj= new AdviceWithStudent();
-    obj.advice =advice;
-    obj.student =student;
-    return obj;
-
-  }
-
-  private class AdviceWithStudent {
-    Student student;
+  private class ZipAdviceWithStudent {
     Advice advice;
+    Student student;
+
+    ZipAdviceWithStudent(Advice advice, Student student) {
+      this.advice = advice;
+      this.student = student;
+    }
   }
+
 }

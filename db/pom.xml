@@ -16,5 +16,8 @@
   <dependencies>
     <dependency><groupId>com.queue.auth</groupId><artifactId>core</artifactId><version>${project.version}</version></dependency>
     <dependency><groupId>com.queue.auth</groupId><artifactId>util</artifactId><version>${project.version}</version></dependency>
+
+    <!--remove in future, IDE had bug!!!-->
+    <dependency><groupId>javax.xml.bind</groupId><artifactId>jaxb-api</artifactId><version>2.1</version></dependency>
   </dependencies>
 </project>

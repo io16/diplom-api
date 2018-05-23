@@ -7,6 +7,9 @@ import com.queue.core.MetaDataStorage;
 import com.queue.core.student.StudentStorage;
 import com.queue.core.teacher.TeacherStorage;
 import com.queue.util.Framework;
+import io.reactiverse.pgclient.PgPoolOptions;
+import io.reactiverse.reactivex.pgclient.PgClient;
+import io.reactiverse.reactivex.pgclient.PgPool;
 import io.vertx.reactivex.ext.asyncsql.MySQLClient;
 import io.vertx.reactivex.ext.sql.SQLClient;
 
@@ -23,8 +26,16 @@ public class _Module extends AbstractModule {
     install(new Conf.Module());
   }
 
-  @Provides @Singleton @Named("SqlClient")
-  SQLClient sqlClient(Framework framework, Conf conf) {
-    return MySQLClient.createShared(framework.vertx(), conf.getJson());
+  @Provides @Singleton @Named("collectorSqlClient")
+  PgPool pgSqlClient(Framework framework, Conf conf) {
+    PgPoolOptions options = new PgPoolOptions()
+        .setHost(conf.getTsdbHost())
+        .setPort(conf.getTsdbPort())
+        .setUser(conf.getTsdbUsername())
+        .setPassword(conf.getTsdbPassword())
+        .setDatabase(conf.getTsdbDatabase())
+        .setMaxSize(10)
+        .setCachePreparedStatements(false);
+    return PgClient.pool(framework.vertx(), options);
   }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class StudentStorageImp implements StudentStorage {
   @Override
   public Single<Student> getStudent(Integer id) {
-    return null;
+    return Single.just(new text2());
   }
 
   @Override
@@ -36,5 +36,12 @@ public class StudentStorageImp implements StudentStorage {
   }
   class text implements Advice{
 
+  }
+
+  class text2 implements Student{
+    @Override
+    public Integer getId() {
+      return 1;
+    }
   }
 }
