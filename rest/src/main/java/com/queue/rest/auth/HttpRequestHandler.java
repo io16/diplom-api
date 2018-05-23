@@ -3,7 +3,7 @@ package com.queue.rest.auth;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.JwtGenerator;
 import com.queue.rest.Route;
-import com.queue.rest.teacher.CreateAdviceHandler;
+import com.queue.rest.teacher.handler.CreateAdviceHandler;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
 import io.vertx.reactivex.ext.web.Router;
