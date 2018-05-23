@@ -3,6 +3,7 @@ package com.queue.rest.auth;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.JwtGenerator;
 import com.queue.rest.Route;
+import com.queue.rest.student.adivice.ReserveAdviceHandler;
 import com.queue.rest.teacher.handler.CreateAdviceHandler;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
@@ -25,8 +26,8 @@ import static io.vertx.core.http.HttpMethod.POST;
 public class HttpRequestHandler implements Route, Handler<RoutingContext> {
   private final Logger log = LoggerFactory.getLogger(HttpRequestHandler.class);
   @Inject JwtGenerator generator;
-  @Inject
-  CreateAdviceHandler createAdviceHandler;
+  @Inject CreateAdviceHandler createAdviceHandler;
+  @Inject ReserveAdviceHandler reserveAdviceHandler;
 
   @Override
   public void configure(Router router) {
@@ -34,7 +35,11 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
         .handler(BodyHandler.create())
         .handler(this);
 
-    router.route(GET,"/test")
+    router.route(POST,"/test")
+        .handler(BodyHandler.create())
+        .handler(reserveAdviceHandler);
+
+    router.route(GET,"/reserveAdviceHandler")
         .handler(BodyHandler.create())
         .handler(createAdviceHandler);
   }
