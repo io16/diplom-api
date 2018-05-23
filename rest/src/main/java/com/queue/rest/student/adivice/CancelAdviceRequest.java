@@ -1,6 +1,17 @@
 package com.queue.rest.student.adivice;
 
-public class CancelAdviceRequest {
+import com.queue.core.student.request.StudentAdviceRequest;
+
+public class CancelAdviceRequest implements StudentAdviceRequest {
+  @Override
+  public Integer getTeacherId() {
+    return null;
+  }
+
+  @Override
+  public Integer getAdviceId() {
+    return null;
+  }
 //  private String email;
 //  private String password;
 //

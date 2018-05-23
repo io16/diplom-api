@@ -3,7 +3,6 @@ package com.queue.rest.student.adivice;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.student.StudentService;
 import com.queue.rest.auth.HttpRequestHandler;
-import com.queue.rest.teacher.request.CancelAdviceRequest;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
 import io.vertx.reactivex.ext.web.RoutingContext;
