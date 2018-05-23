@@ -1,18 +1,17 @@
 package com.queue.core.teacher;
 
 import com.queue.core.Advice;
-import com.queue.core.Student;
-import com.queue.core.Teacher;
+import com.queue.core.teacher.request.TeacherAdviceRequest;
 import io.reactivex.Single;
 
 public interface TeacherAdvice {
-  Single<Advice> createAdvice(Advice advice, Teacher teacher);
+  Single<Advice> createAdvice(TeacherAdviceRequest request);
 
-  Single<Advice> editAdvice(Advice advice, Teacher teacher);
+  Single<Advice> editAdvice(TeacherAdviceRequest request);
 
-  Single<Advice> cancelAdvice(Advice advice, Teacher teacher);
+  Single<Advice> cancelAdvice(TeacherAdviceRequest request);
 
-  Single<Advice> startStudentAdvice(Advice advice, Teacher teacher, Student student);
+  Single<Advice> startStudentAdvice(TeacherAdviceRequest request);
 
-  Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student);
+  Single<Advice> stopStudentAdvice(TeacherAdviceRequest request);
 }
