@@ -5,7 +5,7 @@ import io.reactivex.Single;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface Storage {
+public interface TeacherStorage {
   Single<Advice> createAdvice(Advice advice, Teacher teacher);
 
   Single<Advice> editAdvice(Advice advice, Teacher teacher);
@@ -16,11 +16,7 @@ public interface Storage {
 
   Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student);
 
-  Single<List<Advice>>  getAdvices(Teacher teacher, LocalDate startDate, LocalDate endDate);
-
-  Single<Advice> reserveAdvice(Advice advice, Student student);
-
-  Single<Advice> cancelAdviceReservation(Advice advice, Student student);
+  Single<List<Advice>> getAdvices(LocalDate startDate, LocalDate endDate);
 
 
 }
