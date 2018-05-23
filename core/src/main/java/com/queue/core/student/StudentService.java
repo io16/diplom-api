@@ -24,11 +24,14 @@ public class StudentService implements StudentAdvice {
 
   @Override
   public Single<Advice> reserveAdvice(Advice advice, Student student) {
+    storage.reserveAdvice(advice, student);
+
     return null;
   }
 
   @Override
   public Single<Advice> cancelAdviceReservation(Advice advice, Student student) {
+    storage.cancelAdviceReservation(advice, student);
     return null;
   }
 }
