@@ -20,8 +20,4 @@ public interface TeacherStorage {
   Single<Advice> startStudentAdvice(Advice advice, Teacher teacher, Student student);
 
   Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student);
-
-  Single<List<Advice>> getAdvices(LocalDate startDate, LocalDate endDate);
-
-
 }
