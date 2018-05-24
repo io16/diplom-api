@@ -12,6 +12,11 @@ public class CancelAdviceRequest implements StudentAdviceRequest {
   public Integer getAdviceId() {
     return null;
   }
+
+  @Override
+  public Integer getTeacherId() {
+    return null;
+  }
 //  private String email;
 //  private String password;
 //

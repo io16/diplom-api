@@ -18,10 +18,9 @@ public class StudentService implements StudentAdvice {
 
   @Override
   public Single<List<Advice>> getAdvices(StudentAdviceRequest request) {
-//    studentStorage.getAdvices(teacher, startDate, endDate);
-
-    return null;
+    return studentStorage.getAdvices(request.getTeacherId(), request.getStartDate(), request.getEndDate());
   }
+
 
   @Override
   public Single<Advice> reserveAdvice(StudentAdviceRequest request) {
@@ -33,9 +32,10 @@ public class StudentService implements StudentAdvice {
 
   @Override
   public Single<Advice> cancelAdviceReservation(StudentAdviceRequest request) {
-//    studentStorage.cancelAdviceReservation(advice, student);
-
-    return null;
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(studentStorage.getStudent(request.getStudentId()), ZipAdviceWithStudent::new)
+        .flatMap(obj -> studentStorage.cancelAdviceReservation(obj.advice, obj.student, LocalDateTime.now()));
 
   }
 

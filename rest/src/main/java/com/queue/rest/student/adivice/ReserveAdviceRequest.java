@@ -5,6 +5,7 @@ import com.queue.core.student.request.StudentAdviceRequest;
 public class ReserveAdviceRequest implements StudentAdviceRequest {
   private Integer studentId;
   private Integer adviceId;
+  private Integer teacherId;
 
   @Override
   public Integer getStudentId() {
@@ -18,6 +19,15 @@ public class ReserveAdviceRequest implements StudentAdviceRequest {
   @Override
   public Integer getAdviceId() {
     return adviceId;
+  }
+
+  @Override
+  public Integer getTeacherId() {
+    return teacherId;
+  }
+
+  public void setTeacherId(Integer teacherId) {
+    this.teacherId = teacherId;
   }
 
   public void setAdviceId(Integer adviceId) {
