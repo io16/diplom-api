@@ -4,12 +4,16 @@ import com.queue.core.Advice;
 import com.queue.core.Student;
 import com.queue.core.Teacher;
 import com.queue.core.teacher.TeacherStorage;
+import io.reactiverse.reactivex.pgclient.PgPool;
 import io.reactivex.Single;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 
 public class TeacherStorageImpl implements TeacherStorage {
+  @Inject PgPool client;
+
   @Override
   public Single<Teacher> getTeacher(Integer id) {
     return null;

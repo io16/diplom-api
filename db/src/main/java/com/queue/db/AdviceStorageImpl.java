@@ -2,27 +2,33 @@ package com.queue.db;
 
 import com.queue.core.Advice;
 import com.queue.core.AdviceStorage;
+import com.queue.db.model.AdviceImpl;
 import io.reactiverse.reactivex.pgclient.PgPool;
+import io.reactiverse.reactivex.pgclient.Row;
 import io.reactiverse.reactivex.pgclient.Tuple;
 import io.reactivex.Single;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+import java.time.LocalDateTime;
 
 public class AdviceStorageImpl implements AdviceStorage {
-  @Inject @Named("collectorSqlClient")
-  PgPool client;
+  @Inject PgPool client;
+
   @Override
   public Single<Advice> getAdvice(Integer id) {
     var query = "select * from advice where id = $1";
-    client.rxPreparedQuery(query, Tuple.of(id))
+    return client.rxPreparedQuery(query, Tuple.of(id))
         .map(rowPgResult -> {
-          System.out.println(rowPgResult);
-          return rowPgResult;
-        })
-        .subscribe();
-    return Single.just(new test());
-  }
+          Row row = rowPgResult.iterator().next();
+          System.out.println(row.getInteger("id"));
+          return new AdviceImpl(
+              row.getInteger("id"),
+              row.getInteger("teacher_id"),
+              (LocalDateTime) row.getValue("start_date"),
+              (LocalDateTime) row.getValue("end_date"),
+              row.getInteger("duration_per_student"),
+              row.getInteger("type"));
+        });
 
-  class test implements Advice{}
+  }
 }

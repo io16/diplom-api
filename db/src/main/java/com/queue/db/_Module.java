@@ -26,7 +26,7 @@ public class _Module extends AbstractModule {
     install(new Conf.Module());
   }
 
-  @Provides @Singleton @Named("collectorSqlClient")
+  @Provides @Singleton
   PgPool pgSqlClient(Framework framework, Conf conf) {
     PgPoolOptions options = new PgPoolOptions()
         .setHost(conf.getTsdbHost())
