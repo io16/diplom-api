@@ -2,7 +2,12 @@ package com.queue.core.teacher;
 
 import com.google.inject.Inject;
 import com.queue.core.Advice;
+import com.queue.core.AdviceStorage;
+import com.queue.core.Student;
+import com.queue.core.Teacher;
+import com.queue.core.student.StudentStorage;
 import com.queue.core.teacher.request.TeacherAdviceRequest;
+import com.queue.core.teacher.request.TeacherStudentAdviceRequest;
 import io.reactivex.Single;
 
 import javax.inject.Singleton;
@@ -10,39 +15,71 @@ import javax.inject.Singleton;
 @Singleton
 public class TeacherService implements TeacherAdvice {
   @Inject TeacherStorage teacherStorage;
+  @Inject AdviceStorage adviceStorage;
+  @Inject StudentStorage studentStorage;
 
   @Override
   public Single<Advice> createAdvice(TeacherAdviceRequest request) {
-//    teacherStorage.createAdvice(advice, teacher);
-
-    return null;
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .flatMap(obj -> teacherStorage.createAdvice(obj.advice, obj.teacher));
   }
 
   @Override
   public Single<Advice> editAdvice(TeacherAdviceRequest request) {
-//    teacherStorage.editAdvice(advice, teacher);
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .flatMap(obj -> teacherStorage.editAdvice(obj.advice, obj.teacher));
 
-    return null;
   }
 
   @Override
   public Single<Advice> cancelAdvice(TeacherAdviceRequest request) {
-//    teacherStorage.cancelAdvice(advice, teacher);
-
-    return null;
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .flatMap(obj -> teacherStorage.cancelAdvice(obj.advice, obj.teacher));
   }
 
   @Override
-  public Single<Advice> startStudentAdvice(TeacherAdviceRequest request) {
-//    teacherStorage.startStudentAdvice(advice, teacher, student);
-
-    return null;
+  public Single<Advice> startStudentAdvice(TeacherStudentAdviceRequest request) {
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .zipWith(studentStorage.getStudent(request.getStudentId()), (r, student) -> new ZipAdviceTeacherStudent(r.advice, r.teacher, student))
+        .flatMap(z -> teacherStorage.startStudentAdvice(z.advice, z.teacher, z.student));
   }
 
   @Override
-  public Single<Advice> stopStudentAdvice(TeacherAdviceRequest request) {
-//    teacherStorage.stopStudentAdvice(advice, teacher, student);
+  public Single<Advice> stopStudentAdvice(TeacherStudentAdviceRequest request) {
+    return adviceStorage
+        .getAdvice(request.getAdviceId())
+        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .zipWith(studentStorage.getStudent(request.getStudentId()), (r, student) -> new ZipAdviceTeacherStudent(r.advice, r.teacher, student))
+        .flatMap(z -> teacherStorage.stopStudentAdvice(z.advice, z.teacher, z.student));
+  }
 
-    return null;
+  private class ZipAdviceWithTeacher {
+    Advice advice;
+    Teacher teacher;
+
+    ZipAdviceWithTeacher(Advice advice, Teacher teacher) {
+      this.advice = advice;
+      this.teacher = teacher;
+    }
+  }
+
+  private class ZipAdviceTeacherStudent {
+    Advice advice;
+    Teacher teacher;
+    Student student;
+
+    public ZipAdviceTeacherStudent(Advice advice, Teacher teacher, Student student) {
+      this.advice = advice;
+      this.teacher = teacher;
+      this.student = student;
+    }
   }
 }
