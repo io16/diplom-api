@@ -19,19 +19,19 @@ public class TeacherService implements TeacherAdvice {
   @Inject StudentStorage studentStorage;
 
   @Override
-  public Single<Advice> createAdvice(TeacherAdviceRequest request) {
+  public Single<Advice> createStudentAdvice(TeacherAdviceRequest request) {
     return adviceStorage
         .getAdvice(request.getAdviceId())
         .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
-        .flatMap(obj -> teacherStorage.createAdvice(obj.advice, obj.teacher));
+        .flatMap(obj -> teacherStorage.createStudentAdvice(obj.advice, obj.teacher));
   }
 
   @Override
-  public Single<Advice> editAdvice(TeacherAdviceRequest request) {
+  public Single<Advice> editStudentAdvice(TeacherAdviceRequest request) {
     return adviceStorage
         .getAdvice(request.getAdviceId())
         .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
-        .flatMap(obj -> teacherStorage.editAdvice(obj.advice, obj.teacher));
+        .flatMap(obj -> teacherStorage.editStudentAdvice(obj.advice, obj.teacher));
 
   }
 

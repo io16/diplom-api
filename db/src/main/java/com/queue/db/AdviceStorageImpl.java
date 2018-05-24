@@ -61,7 +61,7 @@ public class AdviceStorageImpl implements AdviceStorage {
         );
   }
 
-  private Advice adviceMapper(Row row) {
+   Advice adviceMapper(Row row) {
     return new AdviceImpl(
         row.getInteger("id"),
         row.getInteger("teacher_id"),

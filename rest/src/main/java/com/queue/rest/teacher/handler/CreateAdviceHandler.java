@@ -25,7 +25,7 @@ public class CreateAdviceHandler implements Handler<RoutingContext> {
         .just(request)
         .map(RoutingContext::getBodyAsString)
         .map(this::parseRequest)
-        .flatMapSingle(service::createAdvice)
+        .flatMapSingle(service::createStudentAdvice)
         .subscribe(
             jwt -> {
               var json = JSON.toJSON(jwt).toString();

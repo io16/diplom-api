@@ -6,9 +6,9 @@ import com.queue.core.teacher.request.TeacherStudentAdviceRequest;
 import io.reactivex.Single;
 
 public interface TeacherAdvice {
-  Single<Advice> createAdvice(TeacherAdviceRequest request);
+  Single<Advice> createStudentAdvice(TeacherAdviceRequest request);
 
-  Single<Advice> editAdvice(TeacherAdviceRequest request);
+  Single<Advice> editStudentAdvice(TeacherAdviceRequest request);
 
   Single<Advice> cancelAdvice(TeacherAdviceRequest request);
 

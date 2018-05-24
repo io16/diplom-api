@@ -1,9 +1,6 @@
 package com.queue.db;
 
-import com.queue.core.Advice;
-import com.queue.core.AdviceStorage;
-import com.queue.core.Student;
-import com.queue.core.Teacher;
+import com.queue.core.*;
 import com.queue.core.teacher.TeacherStorage;
 import com.queue.db.model.TeacherImpl;
 import io.reactiverse.reactivex.pgclient.PgPool;
@@ -13,6 +10,7 @@ import io.reactivex.Single;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TeacherStorageImpl implements TeacherStorage {
   @Inject PgPool client;
@@ -26,17 +24,55 @@ public class TeacherStorageImpl implements TeacherStorage {
   }
 
   @Override
-  public Single<Advice> createAdvice(Advice advice, Teacher teacher) {
+  public Single<Advice> createStudentAdvice(Teacher teacher, LocalDateTime startDate, LocalDateTime endDate, Integer durationPerStudent) {
+    var adviceQuery = "insert into advice (teacher_id, start_date, end_date, type) values " +
+        "($1, $2, $3 ,$4) returning id";
+
+    var start = startDate;
+    while (start.isBefore(endDate)) {
+
+    }
+
+
     return null;
   }
 
   @Override
-  public Single<Advice> editAdvice(Advice advice, Teacher teacher) {
+  public Single<Integer> createGroupAdvice(Teacher teacher, List<Group> groups, LocalDateTime startDate, LocalDateTime endDate) {
+    var adviceQuery = "insert into advice (teacher_id, start_date, end_date, type ) values " +
+        "($1, $2, $3 ,$4) returning *";
+
+//todo add advice variable
+    return client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, 10))
+        .flatMap(rs -> client.rxPreparedQuery(getStringBuilder(groups, rs.iterator().next().getInteger("id"))))
+        .map(rs -> 1);
+  }
+
+  private String getStringBuilder(List<Group> groups, Integer adviceId) {
+    if (groups.size() == 0) throw new RuntimeException();
+    StringBuilder groupAdviceQuery = new StringBuilder("Insert into group_advice (group_id, advice_id) values ");
+    for (int i = 0; i < groups.size(); i++) {
+      groupAdviceQuery.append("(").append(groups.get(i).getId()).append(",").append(adviceId).append(")");
+      if (i + 1 < groups.size())
+        groupAdviceQuery.append(",");
+    }
+    return groupAdviceQuery.toString();
+  }
+
+  @Override
+  public Single<Advice> editStudentAdvice(Advice advice, Teacher teacher) {
 //    adviceStorage.getAdvice(advice.getId())
+//        .flatMap(oldAdvice -> removeAdvices(oldAdvice, advice))
+//        .flatMap(this::uppendAdvices);
 //
 //    var query = "update advice set  ";
 //    return client.rxPreparedQuery(query, Tuple.of(id))
 //        .map(rs -> teacherMapper(rs.iterator().next()));
+    return null;
+  }
+
+  @Override
+  public Single<Advice> editGroupAdvice(Advice advice, Teacher teacher, List<Group> groups) {
     return null;
   }
 
