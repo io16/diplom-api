@@ -13,6 +13,7 @@ import io.reactivex.Single;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class StudentStorageImp implements StudentStorage {
@@ -21,7 +22,8 @@ public class StudentStorageImp implements StudentStorage {
   @Override
   public Single<Student> getStudent(Integer id) {
     var query = "select * from student where id = $1";
-    return client.rxPreparedQuery(query, Tuple.of(id))
+    return client
+        .rxPreparedQuery(query, Tuple.of(id))
         .map(rowPgResult -> {
           Row row = rowPgResult.iterator().next();
           System.out.println(row.getInteger("id"));
@@ -45,10 +47,12 @@ public class StudentStorageImp implements StudentStorage {
   }
 
   @Override
-  public Single<Advice> reserveAdvice(Advice advice, Student student) {
-    return Single.just(new AdviceImpl());
+  public Single<Advice> reserveAdvice(Advice advice, Student student, LocalDateTime startDate) {
+    var query = "Update student_advice set student_id = $1 where advice_id = $2 and reserved_start_date = $3";
+    return client
+        .rxPreparedQuery(query, Tuple.of(student.getId(), advice.getId(), startDate))
+        .map(rs-> advice);
   }
-
   @Override
   public Single<Student> cancelAdviceReservation(Advice advice, Student student) {
     return null;

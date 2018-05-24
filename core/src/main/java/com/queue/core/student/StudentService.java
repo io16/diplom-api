@@ -8,6 +8,7 @@ import com.queue.core.student.request.StudentAdviceRequest;
 import io.reactivex.Single;
 
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Singleton
@@ -27,7 +28,7 @@ public class StudentService implements StudentAdvice {
     return adviceStorage
         .getAdvice(request.getAdviceId())
         .zipWith(studentStorage.getStudent(request.getStudentId()), ZipAdviceWithStudent::new)
-        .flatMap(obj -> studentStorage.reserveAdvice(obj.advice, obj.student));
+        .flatMap(obj -> studentStorage.reserveAdvice(obj.advice, obj.student, LocalDateTime.now()));
   }
 
   @Override

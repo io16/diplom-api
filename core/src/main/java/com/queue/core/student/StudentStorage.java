@@ -6,6 +6,7 @@ import com.queue.core.Teacher;
 import io.reactivex.Single;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StudentStorage {
@@ -15,7 +16,7 @@ public interface StudentStorage {
 
   Single<List<Advice>> getAdvices(LocalDate startDate, LocalDate endDate);
 
-  Single<Advice> reserveAdvice(Advice advice, Student student);
+  Single<Advice> reserveAdvice(Advice advice, Student student, LocalDateTime startDate);
 
   Single<Student> cancelAdviceReservation(Advice advice, Student student);
 
