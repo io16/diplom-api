@@ -49,7 +49,7 @@ public class TeacherService implements TeacherAdvice {
         .getAdvice(request.getAdviceId())
         .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
         .zipWith(studentStorage.getStudent(request.getStudentId()), (r, student) -> new ZipAdviceTeacherStudent(r.advice, r.teacher, student))
-        .flatMap(z -> teacherStorage.startStudentAdvice(z.advice, z.teacher, z.student));
+        .flatMap(z -> teacherStorage.startStudentAdvice(z.advice,  z.student));
   }
 
   @Override
@@ -58,7 +58,7 @@ public class TeacherService implements TeacherAdvice {
         .getAdvice(request.getAdviceId())
         .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
         .zipWith(studentStorage.getStudent(request.getStudentId()), (r, student) -> new ZipAdviceTeacherStudent(r.advice, r.teacher, student))
-        .flatMap(z -> teacherStorage.stopStudentAdvice(z.advice, z.teacher, z.student));
+        .flatMap(z -> teacherStorage.stopStudentAdvice(z.advice,  z.student, "finished"));
   }
 
   private class ZipAdviceWithTeacher {
@@ -71,6 +71,7 @@ public class TeacherService implements TeacherAdvice {
     }
   }
 
+  @Deprecated
   private class ZipAdviceTeacherStudent {
     Advice advice;
     Teacher teacher;

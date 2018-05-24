@@ -17,7 +17,7 @@ public interface TeacherStorage {
 
   Single<Advice> cancelAdvice(Advice advice, Teacher teacher);
 
-  Single<Advice> startStudentAdvice(Advice advice, Teacher teacher, Student student);
+  Single<Advice> startStudentAdvice(Advice advice, Student student);
 
-  Single<Advice> stopStudentAdvice(Advice advice, Teacher teacher, Student student);
+  Single<Advice> stopStudentAdvice(Advice advice, Student student, String description);
 }
