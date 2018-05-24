@@ -9,6 +9,14 @@ public class StudentImpl implements Student {
   private String email;
   private String hash;
 
+  public StudentImpl(Integer id, String firstName, String lastName, String email, String hash) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.hash = hash;
+  }
+
   @Override
   public Integer getId() {
     return id;

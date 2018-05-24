@@ -17,10 +17,10 @@ public class AdviceStorageImpl implements AdviceStorage {
   @Override
   public Single<Advice> getAdvice(Integer id) {
     var query = "select * from advice where id = $1";
+
     return client.rxPreparedQuery(query, Tuple.of(id))
         .map(rowPgResult -> {
           Row row = rowPgResult.iterator().next();
-          System.out.println(row.getInteger("id"));
           return new AdviceImpl(
               row.getInteger("id"),
               row.getInteger("teacher_id"),
@@ -29,6 +29,5 @@ public class AdviceStorageImpl implements AdviceStorage {
               row.getInteger("duration_per_student"),
               row.getInteger("type"));
         });
-
   }
 }

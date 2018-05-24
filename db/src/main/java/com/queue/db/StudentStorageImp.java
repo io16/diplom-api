@@ -7,6 +7,8 @@ import com.queue.core.student.StudentStorage;
 import com.queue.db.model.AdviceImpl;
 import com.queue.db.model.StudentImpl;
 import io.reactiverse.reactivex.pgclient.PgPool;
+import io.reactiverse.reactivex.pgclient.Row;
+import io.reactiverse.reactivex.pgclient.Tuple;
 import io.reactivex.Single;
 
 import javax.inject.Inject;
@@ -18,7 +20,18 @@ public class StudentStorageImp implements StudentStorage {
 
   @Override
   public Single<Student> getStudent(Integer id) {
-    return Single.just(new StudentImpl());
+    var query = "select * from student where id = $1";
+    return client.rxPreparedQuery(query, Tuple.of(id))
+        .map(rowPgResult -> {
+          Row row = rowPgResult.iterator().next();
+          System.out.println(row.getInteger("id"));
+          return new StudentImpl(
+              row.getInteger("id"),
+              row.getString("email"),
+              row.getString("first_name"),
+              row.getString("last_name"),
+              row.getString("hash"));
+        });
   }
 
   @Override
