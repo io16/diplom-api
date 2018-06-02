@@ -29,8 +29,18 @@ public class TeacherStorageImpl implements TeacherStorage {
         "($1, $2, $3 ,$4) returning id";
 
     var start = startDate;
+
+    var studentAdviceQuery = new StringBuilder("insert into student_advice (advice_id, reserved_start_date, reserved_end_date)" +
+        "values ");
+    var adviceId = 1;
     while (start.isBefore(endDate)) {
 
+      var tempStudentAdvice = "( " +  adviceId + ", " + start + ","  + start.plusMinutes(durationPerStudent) + ")";
+      start = startDate.plusMinutes(durationPerStudent);
+
+      if (start.plusMinutes(durationPerStudent).isBefore(endDate)) tempStudentAdvice += ",";
+
+      studentAdviceQuery.append(tempStudentAdvice);
     }
 
 

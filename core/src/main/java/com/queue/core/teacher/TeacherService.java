@@ -11,6 +11,7 @@ import com.queue.core.teacher.request.TeacherStudentAdviceRequest;
 import io.reactivex.Single;
 
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
 
 @Singleton
 public class TeacherService implements TeacherAdvice {
@@ -20,10 +21,10 @@ public class TeacherService implements TeacherAdvice {
 
   @Override
   public Single<Advice> createStudentAdvice(TeacherAdviceRequest request) {
-    return adviceStorage
-        .getAdvice(request.getAdviceId())
-        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
-        .flatMap(obj -> teacherStorage.createStudentAdvice(obj.advice, obj.teacher));
+    return teacherStorage
+        .getTeacher(request.getTeacherId())
+//        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
+        .flatMap(obj -> teacherStorage.createStudentAdvice(obj, LocalDateTime.now(), LocalDateTime.now(), 10)); // ToDO send params
   }
 
   @Override
