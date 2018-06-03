@@ -43,6 +43,8 @@ public class TeacherStorageImpl implements TeacherStorage {
       studentAdviceQuery.append(tempStudentAdvice);
     }
 
+    client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, AdviceType.Student.id))
+//        .flatMap.....
 
     return null;
   }
@@ -51,6 +53,19 @@ public class TeacherStorageImpl implements TeacherStorage {
   public Single<Integer> createGroupAdvice(Teacher teacher, List<Group> groups, LocalDateTime startDate, LocalDateTime endDate) {
     var adviceQuery = "insert into advice (teacher_id, start_date, end_date, type ) values " +
         "($1, $2, $3 ,$4) returning *";
+
+    var adviceId = 1;
+
+    var groupAdviceQuery = new StringBuilder("insert into group_advice (advice_id, group_id) values");
+
+    for (int i = 0; i < groups.size(); i++) {
+      var temp = "(" + adviceId + "," + groups.get(i) + ")";
+
+      if (i + 1 < groups.size()) temp += ",";
+
+      groupAdviceQuery.append(temp);
+
+    }
 
 //todo add advice variable
     return client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, 10))
@@ -71,6 +86,8 @@ public class TeacherStorageImpl implements TeacherStorage {
 
   @Override
   public Single<Advice> editStudentAdvice(Advice advice, Teacher teacher) {
+
+    //todo Edit student_advice like : edit advice per student ( time, duration, desc)
 //    adviceStorage.getAdvice(advice.getId())
 //        .flatMap(oldAdvice -> removeAdvices(oldAdvice, advice))
 //        .flatMap(this::uppendAdvices);
@@ -83,6 +100,7 @@ public class TeacherStorageImpl implements TeacherStorage {
 
   @Override
   public Single<Advice> editGroupAdvice(Advice advice, Teacher teacher, List<Group> groups) {
+    var query = "";
     return null;
   }
 
