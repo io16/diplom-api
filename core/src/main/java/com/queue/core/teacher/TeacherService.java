@@ -6,6 +6,7 @@ import com.queue.core.AdviceStorage;
 import com.queue.core.Student;
 import com.queue.core.Teacher;
 import com.queue.core.student.StudentStorage;
+import com.queue.core.teacher.request.CreateAdviceRequest;
 import com.queue.core.teacher.request.TeacherAdviceRequest;
 import com.queue.core.teacher.request.TeacherStudentAdviceRequest;
 import io.reactivex.Single;
@@ -20,11 +21,11 @@ public class TeacherService implements TeacherAdvice {
   @Inject StudentStorage studentStorage;
 
   @Override
-  public Single<Advice> createStudentAdvice(TeacherAdviceRequest request) {
+  public Single<Boolean> createStudentAdvice(CreateAdviceRequest request) {
     return teacherStorage
         .getTeacher(request.getTeacherId())
 //        .zipWith(teacherStorage.getTeacher(request.getTeacherId()), ZipAdviceWithTeacher::new)
-        .flatMap(obj -> teacherStorage.createStudentAdvice(obj, LocalDateTime.now(), LocalDateTime.now(), 10)); // ToDO send params
+        .flatMap(obj -> teacherStorage.createStudentAdvice(obj, request.getStartAt(), request.getEndDate(), request.getDurationPerStudent()));
   }
 
   @Override

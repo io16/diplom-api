@@ -2,6 +2,7 @@ package com.queue.db;
 
 import com.queue.core.*;
 import com.queue.core.teacher.TeacherStorage;
+import com.queue.db.model.AdviceImpl;
 import com.queue.db.model.TeacherImpl;
 import io.reactiverse.reactivex.pgclient.PgPool;
 import io.reactiverse.reactivex.pgclient.Row;
@@ -24,29 +25,31 @@ public class TeacherStorageImpl implements TeacherStorage {
   }
 
   @Override
-  public Single<Advice> createStudentAdvice(Teacher teacher, LocalDateTime startDate, LocalDateTime endDate, Integer durationPerStudent) {
+  public Single<Boolean> createStudentAdvice(Teacher teacher, LocalDateTime startDate, LocalDateTime endDate, Integer durationPerStudent) {
     var adviceQuery = "insert into advice (teacher_id, start_date, end_date, type) values " +
         "($1, $2, $3 ,$4) returning id";
 
-    var start = startDate;
+    return client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, AdviceType.Student.id))
+        .map(rs -> rs.iterator().next().getInteger(0))
+        .flatMap(id -> client.rxPreparedQuery(getCreateStudentAdviceSql(startDate, endDate, durationPerStudent, id)))
+        .map(rs -> true);
 
+  }
+
+  private String getCreateStudentAdviceSql(LocalDateTime startDate, LocalDateTime endDate, Integer durationPerStudent, int adviceId) {
     var studentAdviceQuery = new StringBuilder("insert into student_advice (advice_id, reserved_start_date, reserved_end_date)" +
         "values ");
-    var adviceId = 1;
+    var start = startDate;
     while (start.isBefore(endDate)) {
 
-      var tempStudentAdvice = "( " +  adviceId + ", " + start + ","  + start.plusMinutes(durationPerStudent) + ")";
-      start = startDate.plusMinutes(durationPerStudent);
+      var tempStudentAdvice = "( " +  adviceId + ", \'" + start + "\', \'"  + start.plusMinutes(durationPerStudent) + "\')";
+      start = start.plusMinutes(durationPerStudent);
 
-      if (start.plusMinutes(durationPerStudent).isBefore(endDate)) tempStudentAdvice += ",";
+      if (start.isBefore(endDate)) tempStudentAdvice += ",";
 
       studentAdviceQuery.append(tempStudentAdvice);
     }
-
-    client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, AdviceType.Student.id));
-//        .flatMap.....
-
-    return null;
+    return  studentAdviceQuery.toString();
   }
 
   @Override

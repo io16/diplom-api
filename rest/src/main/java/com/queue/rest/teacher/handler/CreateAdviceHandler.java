@@ -3,7 +3,7 @@ package com.queue.rest.teacher.handler;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.teacher.TeacherService;
 import com.queue.rest.HttpRequestHandler;
-import com.queue.rest.teacher.request.CreateAdviceRequest;
+import com.queue.rest.teacher.request.CreateAdviceRequestImpl;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
 import io.vertx.reactivex.ext.web.RoutingContext;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 public class CreateAdviceHandler implements Handler<RoutingContext> {
@@ -34,7 +35,7 @@ public class CreateAdviceHandler implements Handler<RoutingContext> {
             error -> {
               log.error("Could not handle request.", error);
 //              if (error instanceof HttpRequestHandler.BadRequest) {
-//                request.response().setStatusCode(BAD_REQUEST.code()).end();
+                request.response().setStatusCode(BAD_REQUEST.code()).end();
 //              } else {
 //                request.response().setStatusCode(UNAUTHORIZED.code()).end();
 //              }
@@ -42,12 +43,13 @@ public class CreateAdviceHandler implements Handler<RoutingContext> {
         );
   }
 
-  private CreateAdviceRequest parseRequest(String request) {
-    var adviceRequest = JSON.parseObject(request, CreateAdviceRequest.class);
+  private CreateAdviceRequestImpl parseRequest(String request) {
+    var adviceRequest = JSON.parseObject(request, CreateAdviceRequestImpl.class);
 
-//    if (adviceRequest == null ||
-//        adviceRequest.getEmail() == null ||
-//        adviceRequest.getPassword() == null) throw new BadRequest();
+    if (adviceRequest == null ||
+        adviceRequest.getTeacherId() == null ||
+        adviceRequest.getStartAt() == null ||
+        adviceRequest.getEndDate() == null) throw new BadRequest();
 
     return adviceRequest;
   }

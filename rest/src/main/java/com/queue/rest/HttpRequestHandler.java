@@ -19,7 +19,6 @@ import javax.inject.Singleton;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpResponseStatus.UNAUTHORIZED;
 import static io.netty.handler.codec.rtsp.RtspResponseStatuses.BAD_REQUEST;
-import static io.vertx.core.http.HttpMethod.GET;
 import static io.vertx.core.http.HttpMethod.POST;
 
 @Singleton
@@ -39,7 +38,7 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
         .handler(BodyHandler.create())
         .handler(reserveAdviceHandler);
 
-    router.route(GET,"/reserveAdviceHandler")
+    router.route(POST,"/create/advice/student")
         .handler(BodyHandler.create())
         .handler(createAdviceHandler);
   }

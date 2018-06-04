@@ -13,7 +13,7 @@ import java.util.List;
 public interface TeacherStorage {
   Single<Teacher> getTeacher(Integer id);
 
-  Single<Advice> createStudentAdvice(Teacher teacher, LocalDateTime startAt, LocalDateTime endDate, Integer durationPerStudent);
+  Single<Boolean> createStudentAdvice(Teacher teacher, LocalDateTime startAt, LocalDateTime endDate, Integer durationPerStudent);
 
   Single<Integer> createGroupAdvice(Teacher teacher, List<Group> groups, LocalDateTime startDate, LocalDateTime endDate);
 
