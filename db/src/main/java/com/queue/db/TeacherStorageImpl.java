@@ -43,7 +43,7 @@ public class TeacherStorageImpl implements TeacherStorage {
       studentAdviceQuery.append(tempStudentAdvice);
     }
 
-    client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, AdviceType.Student.id))
+    client.rxPreparedQuery(adviceQuery, Tuple.of(teacher.getId(), startDate, endDate, AdviceType.Student.id));
 //        .flatMap.....
 
     return null;

@@ -2,6 +2,8 @@ package com.queue.rest.student.adivice;
 
 import com.queue.core.student.request.StudentAdviceRequest;
 
+import java.time.LocalDateTime;
+
 public class CancelAdviceRequest implements StudentAdviceRequest {
   @Override
   public Integer getStudentId() {
@@ -15,6 +17,16 @@ public class CancelAdviceRequest implements StudentAdviceRequest {
 
   @Override
   public Integer getTeacherId() {
+    return null;
+  }
+
+  @Override
+  public LocalDateTime getStartDate() {
+    return null;
+  }
+
+  @Override
+  public LocalDateTime getEndDate() {
     return null;
   }
 //  private String email;

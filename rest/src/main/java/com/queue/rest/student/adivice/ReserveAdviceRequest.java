@@ -2,6 +2,8 @@ package com.queue.rest.student.adivice;
 
 import com.queue.core.student.request.StudentAdviceRequest;
 
+import java.time.LocalDateTime;
+
 public class ReserveAdviceRequest implements StudentAdviceRequest {
   private Integer studentId;
   private Integer adviceId;
@@ -24,6 +26,16 @@ public class ReserveAdviceRequest implements StudentAdviceRequest {
   @Override
   public Integer getTeacherId() {
     return teacherId;
+  }
+
+  @Override
+  public LocalDateTime getStartDate() {
+    return null;
+  }
+
+  @Override
+  public LocalDateTime getEndDate() {
+    return null;
   }
 
   public void setTeacherId(Integer teacherId) {

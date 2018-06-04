@@ -2,8 +2,8 @@ package com.queue.rest.teacher.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.queue.core.teacher.TeacherService;
+import com.queue.core.teacher.request.TeacherStudentAdviceRequest;
 import com.queue.rest.HttpRequestHandler;
-import com.queue.rest.teacher.request.StartAdviceRequest;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
 import io.vertx.reactivex.ext.web.RoutingContext;
@@ -42,8 +42,8 @@ public class StartAdviceHandler implements Handler<RoutingContext> {
         );
   }
 
-  private StartAdviceRequest parseRequest(String request) {
-    return JSON.parseObject(request, StartAdviceRequest.class);
+  private TeacherStudentAdviceRequest parseRequest(String request) {
+    return JSON.parseObject(request, TeacherStudentAdviceRequest.class);
 
 //    if (adviceRequest == null ||
 //        adviceRequest.getEmail() == null ||
