@@ -18,8 +18,7 @@ public class StudentService implements StudentAdvice {
 
   @Override
   public Single<List<Advice>> getAdvices(StudentAdviceRequest request) {
-//    return studentStorage.getAdvices(request.getTeacherId(), request.getStartDate(), request.getEndDate());
-    return null;
+    return adviceStorage.getAdvices(request.getTeacherId(), request.getStartDate(), request.getEndDate());
   }
 
 

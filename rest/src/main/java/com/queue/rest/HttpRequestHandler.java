@@ -3,6 +3,7 @@ package com.queue.rest;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.JwtGenerator;
 import com.queue.rest.auth.HttpRequest;
+import com.queue.rest.student.adivice.GetAdviceHandler;
 import com.queue.rest.student.adivice.ReserveAdviceHandler;
 import com.queue.rest.teacher.handler.CreateAdviceHandler;
 import io.reactivex.Flowable;
@@ -19,6 +20,7 @@ import javax.inject.Singleton;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpResponseStatus.UNAUTHORIZED;
 import static io.netty.handler.codec.rtsp.RtspResponseStatuses.BAD_REQUEST;
+import static io.vertx.core.http.HttpMethod.GET;
 import static io.vertx.core.http.HttpMethod.POST;
 
 @Singleton
@@ -27,6 +29,8 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
   @Inject JwtGenerator generator;
   @Inject CreateAdviceHandler createAdviceHandler;
   @Inject ReserveAdviceHandler reserveAdviceHandler;
+  @Inject
+  GetAdviceHandler getAdiceHandler;
 
   @Override
   public void configure(Router router) {
@@ -34,13 +38,17 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
         .handler(BodyHandler.create())
         .handler(this);
 
-    router.route(POST,"/test")
+    router.route(GET,"/test")
         .handler(BodyHandler.create())
         .handler(reserveAdviceHandler);
 
     router.route(POST,"/create/advice/student")
         .handler(BodyHandler.create())
         .handler(createAdviceHandler);
+
+    router.route(GET,"/advice")
+        .handler(BodyHandler.create())
+        .handler(getAdiceHandler);
   }
 
   @Override

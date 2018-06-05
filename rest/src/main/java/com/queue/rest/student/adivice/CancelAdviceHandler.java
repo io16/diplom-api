@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
-public class CancelAdiveHandler implements Handler<RoutingContext> {
+public class CancelAdviceHandler implements Handler<RoutingContext> {
   private final Logger log = LoggerFactory.getLogger(HttpRequestHandler.class);
 
   @Inject StudentService service;
