@@ -33,7 +33,7 @@ public class GetAdviceHandler implements Handler<RoutingContext> {
         .flatMapSingle(service::getAdvices)
         .subscribe(
             advices -> {
-              var json = JSON.toJSON(advices).toString();
+              var json =JSON.toJSONStringWithDateFormat(advices, "yyyy-MM-dd HH:mm:ss.SSS");
               request.response().setStatusCode(OK.code()).end(json);
             },
             error -> {
