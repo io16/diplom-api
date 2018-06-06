@@ -1,15 +1,17 @@
 package com.queue.core.student;
 
-import com.queue.core.Advice;
-import com.queue.core.student.request.StudentAdviceRequest;
-import io.reactivex.Single;
-
-import java.util.List;
+import java.time.LocalDateTime;
 
 public interface StudentAdvice {
-  Single<List<Advice>> getAdvices(StudentAdviceRequest request);
+  Integer getId();
 
-  Single<Advice> reserveAdvice(StudentAdviceRequest request);
+  Integer getStudentId();
 
-  Single<Advice> cancelAdviceReservation(StudentAdviceRequest request);
+  LocalDateTime getReservedStartDate();
+
+  LocalDateTime getReservedEndDate();
+
+  LocalDateTime getActualStartDate();
+
+  LocalDateTime getActualEndDate();
 }

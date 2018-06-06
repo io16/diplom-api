@@ -1,7 +1,7 @@
 package com.queue.rest.student.adivice;
 
 import com.alibaba.fastjson.JSON;
-import com.queue.core.student.StudentService;
+import com.queue.core.student.StudentAdviceService;
 import com.queue.rest.HttpRequestHandler;
 import io.reactivex.Flowable;
 import io.vertx.core.Handler;
@@ -16,7 +16,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 public class CancelAdviceHandler implements Handler<RoutingContext> {
   private final Logger log = LoggerFactory.getLogger(HttpRequestHandler.class);
 
-  @Inject StudentService service;
+  @Inject StudentAdviceService service;
 
   @Override
   public void handle(RoutingContext request) {

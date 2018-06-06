@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Singleton
-public class StudentService implements StudentAdvice {
+public class StudentServiceImpl implements StudentAdviceService {
   @Inject StudentStorage studentStorage;
   @Inject AdviceStorage adviceStorage;
 
@@ -37,6 +37,11 @@ public class StudentService implements StudentAdvice {
         .zipWith(studentStorage.getStudent(request.getStudentId()), ZipAdviceWithStudent::new)
         .flatMap(obj -> studentStorage.cancelAdviceReservation(obj.advice, obj.student, LocalDateTime.now()));
 
+  }
+
+  @Override
+  public Single<List<StudentAdvice>> getStudentAdvices(StudentAdviceRequest request) {
+    return adviceStorage.getStudentAdvices(request.getAdviceId());
   }
 
   private class ZipAdviceWithStudent {

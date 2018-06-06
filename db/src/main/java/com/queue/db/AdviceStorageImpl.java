@@ -2,7 +2,9 @@ package com.queue.db;
 
 import com.queue.core.Advice;
 import com.queue.core.AdviceStorage;
+import com.queue.core.student.StudentAdvice;
 import com.queue.db.model.AdviceImpl;
+import com.queue.db.model.StudentAdviceImpl;
 import io.reactiverse.reactivex.pgclient.PgPool;
 import io.reactiverse.reactivex.pgclient.Row;
 import io.reactiverse.reactivex.pgclient.Tuple;
@@ -45,6 +47,23 @@ public class AdviceStorageImpl implements AdviceStorage {
   }
 
   @Override
+  public Single<List<StudentAdvice>> getStudentAdvices(Integer adviceId) {
+    var query = "select * from student_advice where advice_id = $1";
+
+    List<StudentAdvice> studentAdvices = new ArrayList<>();
+    return client.rxPreparedQuery(query, Tuple.of(adviceId))
+        .map(rs -> {
+              var rows = rs.iterator();
+              while (rows.hasNext()) {
+                var row = rows.next();
+                studentAdvices.add(studentAdviceMapper(row));
+              }
+              return studentAdvices;
+            }
+        );
+  }
+
+  @Override
   public Single<List<Advice>> getAdvices(LocalDateTime startDate, LocalDateTime endDate) {
     var query = "Select * from advice where  start_date >= $1 and start_date <= $2";
 
@@ -69,5 +88,14 @@ public class AdviceStorageImpl implements AdviceStorage {
         (LocalDateTime) row.getValue("end_date"),
         row.getInteger("duration_per_student"),
         row.getInteger("type"));
+  }
+
+  StudentAdvice studentAdviceMapper(Row row) {
+    return new StudentAdviceImpl(
+        row.getInteger("id"),
+        row.getInteger("student_id"),
+        row.getInteger("advice_id"),
+        (LocalDateTime) row.getValue("reserved_start_date"),
+        (LocalDateTime) row.getValue("reserved_end_date"));
   }
 }

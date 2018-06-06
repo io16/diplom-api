@@ -10,24 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.rtsp.RtspResponseStatuses.BAD_REQUEST;
 
-public class GetAdviceHandler implements Handler<RoutingContext> {
+public class GetStudentAdviceHandler implements Handler<RoutingContext> {
   private final Logger log = LoggerFactory.getLogger(HttpRequestHandler.class);
 
-  @Inject
-  StudentAdviceService service;
+  @Inject StudentAdviceService service;
 
   @Override
   public void handle(RoutingContext request) {
     Flowable
         .just(request)
-        .map( r ->  parseRequest(r.queryParam("teacher"), r.queryParam("start"), r.queryParam("end")))
-        .flatMapSingle(service::getAdvices)
+        .map( r ->  parseRequest(r.queryParam("advice_id")))
+        .flatMapSingle(service::getStudentAdvices)
         .subscribe(
             advices -> {
               var json =JSON.toJSONStringWithDateFormat(advices, "yyyy-MM-dd HH:mm:ss.SSS");
@@ -45,11 +43,9 @@ public class GetAdviceHandler implements Handler<RoutingContext> {
         );
   }
 
-  private GetAdviceRequest parseRequest(List<String> teacherId, List<String> startDate, List<String> endDate) {
-  var request = new GetAdviceRequest();
-    request.setTeacherId(Integer.valueOf(teacherId.get(0)));
-    request.setStartDate(LocalDateTime.parse(startDate.get(0)));
-    request.setEndDate(LocalDateTime.parse(endDate.get(0)));
+  private GetStudentAdviceRequest parseRequest(List<String> adviceId) {
+  var request = new GetStudentAdviceRequest();
+    request.setAdviceId(Integer.valueOf(adviceId.get(0)));
     return request;
 //    return JSON.parseObject(request, CancelAdviceRequest.class);
 
