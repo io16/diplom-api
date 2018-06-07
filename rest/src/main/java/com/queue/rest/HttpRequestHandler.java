@@ -3,6 +3,7 @@ package com.queue.rest;
 import com.alibaba.fastjson.JSON;
 import com.queue.core.JwtGenerator;
 import com.queue.rest.auth.HttpRequest;
+import com.queue.rest.common.GetGroupsHandler;
 import com.queue.rest.student.adivice.GetAdviceHandler;
 import com.queue.rest.student.adivice.GetStudentAdviceHandler;
 import com.queue.rest.student.adivice.ReserveAdviceHandler;
@@ -32,6 +33,7 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
   @Inject ReserveAdviceHandler reserveAdviceHandler;
   @Inject GetAdviceHandler getAdviceHandler;
   @Inject GetStudentAdviceHandler getStudentAdviceHandler;
+  @Inject GetGroupsHandler getGroupsHandler;
 
   @Override
   public void configure(Router router) {
@@ -54,6 +56,10 @@ public class HttpRequestHandler implements Route, Handler<RoutingContext> {
     router.route(GET,"/advice/student")
         .handler(BodyHandler.create())
         .handler(getStudentAdviceHandler);
+
+    router.route(GET,"/group")
+        .handler(BodyHandler.create())
+        .handler(getGroupsHandler);
   }
 
   @Override

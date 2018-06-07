@@ -3,6 +3,7 @@ package com.queue.db;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.queue.core.AdviceStorage;
+import com.queue.core.GroupStorage;
 import com.queue.core.MetaDataStorage;
 import com.queue.core.student.StudentStorage;
 import com.queue.core.teacher.TeacherStorage;
@@ -23,6 +24,7 @@ public class _Module extends AbstractModule {
     bind(StudentStorage.class).to(StudentStorageImp.class);
     bind(TeacherStorage.class).to(TeacherStorageImpl.class);
     bind(AdviceStorage.class).to(AdviceStorageImpl.class);
+    bind(GroupStorage.class).to(GroupStorageImpl.class);
     install(new Conf.Module());
   }
 

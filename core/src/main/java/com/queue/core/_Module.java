@@ -8,5 +8,6 @@ public class _Module extends AbstractModule {
   @Override
   protected void configure() {
     bind(StudentAdviceService.class).to(StudentServiceImpl.class);
+    bind(GroupService.class).to(GroupServiceImpl.class);
   }
 }
